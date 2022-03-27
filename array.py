@@ -1,28 +1,22 @@
-#User function Template for python3
 
 class Solution:
-    def kthSmallest(self,arr, l, r, k):
-        '''
-        arr : given array
-        l : starting index of the array i.e 0
-        r : ending index of the array i.e size-1
-        k : find kth smallest element and return using this function
-        '''
+    def sort012(self,arr,n):
+        # code here
         arr.sort()
-        return arr[l+k-1]
+        return arr
 #{ 
 #  Driver Code Starts
 #Initial Template for Python 3
 
-
-if __name__ == '__main__': 
-    import random 
+if __name__ == '__main__':
     t=int(input())
-    for tcs in range(t):
+    for _ in range(t):
         n=int(input())
-        arr=list(map(int,input().strip().split()))
-        k=int(input())
+        arr=[int(x) for x in input().strip().split()]
         ob=Solution()
-        print(ob.kthSmallest(arr, 0, n-1, k))
-        
+        ob.sort012(arr,n)
+        for i in arr:
+            print(i, end=' ')
+        print()
+
 # } Driver Code Ends
