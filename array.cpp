@@ -1,75 +1,65 @@
-//https://practice.geeksforgeeks.org/problems/sort-an-array-of-0s-1s-and-2s4231/1#
+//https://practice.geeksforgeeks.org/problems/move-all-negative-elements-to-end1813/1#
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-
-
  // } Driver Code Ends
-class Solution
-{
+class Solution{
     public:
-    void sort012(int a[], int n)
+    void segregateElements(int arr[],int n)
     {
-        // code here
-        int l = 0;
-        int mid = 0;
-        int h = n-1;
-        int temp = 0;
+        // Your code goes here
+        int temp[n];
+        int j = 0;
         
-        while(mid<=h)
+        // Storing positive numbers into temp array
+        for(int i=0; i<n; i++)
         {
-            if(a[mid]==0)
+            if(arr[i]>0)
             {
-                temp = a[mid];
-                a[mid] = a[l];
-                a[l] = temp;
-                mid ++;
-                l ++;
-            }
-            else if(a[mid]==1)
-            {
-                mid ++;
-            }
-            else if(a[mid]==2)
-            {
-                temp = a[mid];
-                a[mid] = a[h];
-                a[h] = temp;
-                h --;
+                temp[j++] = arr[i];
             }
         }
-
+        
+        if(j==n||j==0)
+        {
+            return;
+        }
+        
+        
+        // Storing negative numbers into temp array
+        for(int i=0; i<n; i++)
+        {
+            if(arr[i]<0)
+            {
+                temp[j++] = arr[i];
+            }
+        }
+        
+        //Copying contents of temp array to original array.
+        memcpy(arr, temp, sizeof(temp));
+        
     }
-    
 };
 
 // { Driver Code Starts.
 int main() {
-
-    int t;
-    cin >> t;
-
-    while(t--){
-        int n;
-        cin >>n;
-        int a[n];
-        for(int i=0;i<n;i++){
-            cin >> a[i];
-        }
-
-        Solution ob;
-        ob.sort012(a, n);
-
-        for(int i=0;i<n;i++){
-            cout << a[i]  << " ";
-        }
-
-        cout << endl;
-        
-        
-    }
-    return 0;
+	// your code goes here
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		int a[n];
+		for(int i=0;i<n;i++)
+		cin>>a[i];
+		Solution ob;
+		ob.segregateElements(a,n);
+		
+        for(int i=0;i<n;i++)
+        cout<<a[i]<<" ";
+		cout<<endl;
+	}
 }
-
   // } Driver Code Ends
