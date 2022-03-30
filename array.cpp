@@ -1,57 +1,83 @@
-//https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1
+//https://practice.geeksforgeeks.org/problems/next-permutation5226/1#
+
+// Initial Template for C++
 
 #include <bits/stdc++.h>
 using namespace std;
 
  // } Driver Code Ends
-//User function template for C++
+// User function Template for C++
+
 class Solution{
 public:
-	void merge(int arr1[], int arr2[], int n, int m) {
-	    // code here
-	    
-	    int i = 0, j = 0, k = n-1;
-	    
-	    while(i<=k && j<m)
-	    {
-	        if(arr1[i] < arr2[j])
-	        {
-	            i++;
-	        }
-	        else
-	        {
-	            swap(arr1[k--], arr2[j++]);
-	        }
-	    }
-	    
-	    sort(arr1, arr1+n);
-	    sort(arr2, arr2+m);
-	}
+    vector<int> nextPermutation(int N, vector<int> arr){
+        // code here
+        
+        if(N==1)
+           return arr;
+           
+        int i=1;
+        int last_peak_idx = -1;
+        
+        while(i<N)
+        {
+            if(arr[i] > arr[i-1])
+              last_peak_idx = i;
+            i += 1;
+        }
+        
+        if(last_peak_idx == -1)
+        {
+            sort(arr.begin(), arr.end());
+            return arr;
+        }
+        
+        
+        int last_peak = arr[last_peak_idx];
+        int index = last_peak_idx;
+        int idx = 0;
+        
+        if((index == N-1) && (arr[index] > arr[index-1]))
+        {
+            swap(arr[index], arr[index-1]);
+            return arr;
+        }
+        
+        
+        for(i=index+1; i<N; ++i)
+        {
+            if(arr[i] > arr[index-1] and arr[i] < last_peak)
+            {
+                idx = i;
+            }
+        }
+        
+        swap(arr[index-1], arr[idx]);
+        
+        sort(arr.begin()+index, arr.end());
+        
+        return arr;
+
+    }
 };
 
 // { Driver Code Starts.
-int main() {
+
+int main(){
     int t;
-    cin >> t;
-    while (t--) {
-        int n, m, i;
-        cin >> n >> m;
-        int arr1[n], arr2[m];
-        for (i = 0; i < n; i++) {
-            cin >> arr1[i];
-        }
-        for (i = 0; i < m; i++) {
-            cin >> arr2[i];
-        }
+    cin>>t;
+    while(t--){
+        int N;
+        cin>>N;
+        vector<int> arr(N);
+        for(int i = 0;i < N;i++)
+            cin>>arr[i];
+        
         Solution ob;
-        ob.merge(arr1, arr2, n, m);
-        for (i = 0; i < n; i++) {
-            cout << arr1[i] << " ";
-        }
-        for (i = 0; i < m; i++) {
-            cout << arr2[i] << " ";
-        }
-        cout << "\n";
+        vector<int> ans = ob.nextPermutation(N, arr);
+        for(int u: ans)
+            cout<<u<<" ";
+        cout<<"\n";
     }
     return 0;
 }  // } Driver Code Ends
