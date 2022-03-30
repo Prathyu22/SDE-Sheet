@@ -1,56 +1,62 @@
-//https://practice.geeksforgeeks.org/problems/minimize-the-heights3351/1
+//https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1
 
-
-// Initial template for C++
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
-// User function template for C++
 
-class Solution {
+ // } Driver Code Ends
+// Function to return minimum number of jumps to end of array
+
+class Solution{
   public:
-    int getMinDiff(int arr[], int n, int k) {
-        // code here
+    int minJumps(int arr[], int n){
+        // Your code here
+        int jump = 0;
+        int dest = 0;
+        int pos = 0;
         
-        sort(arr, arr+n);
-        
-        int minele = arr[0];
-        int maxele = arr[n-1];
-        int diff = maxele - minele;
-        
-        for(int i=0; i<n; i++)
+        for(int i=0; i<n-1; i++)
         {
-            maxele = max(arr[n-1]-k, arr[i-1]+k);
-            minele = min(arr[0]+k, arr[i]-k);
+            if(arr[0] == 0)
+              return -1;
             
-            if(minele < 0)
-             continue;
+            dest = max(dest, arr[i]+i);
             
-            diff = min(diff, maxele - minele);
+            if(pos == i)
+            {
+                pos = dest;
+                jump++;
+            }
         }
         
-        return diff;
-        
+        if(dest >= n-1)
+        {
+            return jump;
+        }
+        else
+        {
+            return -1;
+        }
     }
 };
 
+
 // { Driver Code Starts.
-int main() {
+
+int main()
+{
     int t;
-    cin >> t;
-    while (t--) {
-        int n, k;
-        cin >> k;
-        cin >> n;
+    cin>>t;
+    while(t--)
+    {
+        int n,i,j;
+        cin>>n;
         int arr[n];
-        for (int i = 0; i < n; i++) {
-            cin >> arr[i];
-        }
-        Solution ob;
-        auto ans = ob.getMinDiff(arr, n, k);
-        cout << ans << "\n";
+        for(int i=0; i<n; i++)
+            cin>>arr[i];
+        Solution obj;
+        cout<<obj.minJumps(arr, n)<<endl;
     }
     return 0;
-}  // } Driver Code Ends
+}
+  // } Driver Code Ends
