@@ -1,83 +1,55 @@
-//https://practice.geeksforgeeks.org/problems/next-permutation5226/1#
+//https://practice.geeksforgeeks.org/problems/8a644e94faaa94968d8665ba9e0a80d1ae3e0a2d/1
 
-// Initial Template for C++
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
  // } Driver Code Ends
-// User function Template for C++
-
-class Solution{
+class Solution {
 public:
-    vector<int> nextPermutation(int N, vector<int> arr){
-        // code here
-        
-        if(N==1)
-           return arr;
-           
-        int i=1;
-        int last_peak_idx = -1;
-        
-        while(i<N)
-        {
-            if(arr[i] > arr[i-1])
-              last_peak_idx = i;
-            i += 1;
-        }
-        
-        if(last_peak_idx == -1)
-        {
-            sort(arr.begin(), arr.end());
-            return arr;
-        }
-        
-        
-        int last_peak = arr[last_peak_idx];
-        int index = last_peak_idx;
-        int idx = 0;
-        
-        if((index == N-1) && (arr[index] > arr[index-1]))
-        {
-            swap(arr[index], arr[index-1]);
-            return arr;
-        }
-        
-        
-        for(i=index+1; i<N; ++i)
-        {
-            if(arr[i] > arr[index-1] and arr[i] < last_peak)
-            {
-                idx = i;
+    vector<vector<int>> overlappedInterval(vector<vector<int>>& intervals) {
+         // Code here
+         vector<vector<int>>ans;
+        if(intervals.size() == 0)
+            return ans;
+        sort(intervals.begin(), intervals.end());
+        int l = intervals[0][0];
+        int r = intervals[0][1];
+        for(int i = 1; i < intervals.size(); i++){
+            if(intervals[i][0] <= r)
+                r = max(r, intervals[i][1]);
+            else{
+                ans.push_back({l,r});
+                l = intervals[i][0];
+                r = intervals[i][1];
             }
         }
-        
-        swap(arr[index-1], arr[idx]);
-        
-        sort(arr.begin()+index, arr.end());
-        
-        return arr;
-
+        ans.push_back({l,r});
+        return ans;
     }
 };
 
 // { Driver Code Starts.
-
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int N;
-        cin>>N;
-        vector<int> arr(N);
-        for(int i = 0;i < N;i++)
-            cin>>arr[i];
-        
-        Solution ob;
-        vector<int> ans = ob.nextPermutation(N, arr);
-        for(int u: ans)
-            cout<<u<<" ";
-        cout<<"\n";
-    }
-    return 0;
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n;
+		cin >> n;
+		vector<vector<int>>Intervals(n);
+		for(int i = 0; i < n; i++){
+			int x, y;
+			cin >> x >> y;
+			Intervals[i].push_back(x);
+			Intervals[i].push_back(y);
+		}
+		Solution obj;
+		vector<vector<int>> ans = obj.overlappedInterval(Intervals);
+		for(auto i: ans){
+			for(auto j: i){
+				cout << j << " ";
+			}
+		}
+		cout << "\n";
+	}
+	return 0;
 }  // } Driver Code Ends
