@@ -1,55 +1,48 @@
-//https://practice.geeksforgeeks.org/problems/8a644e94faaa94968d8665ba9e0a80d1ae3e0a2d/1
+//https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
+
  // } Driver Code Ends
-class Solution {
-public:
-    vector<vector<int>> overlappedInterval(vector<vector<int>>& intervals) {
-         // Code here
-         vector<vector<int>>ans;
-        if(intervals.size() == 0)
-            return ans;
-        sort(intervals.begin(), intervals.end());
-        int l = intervals[0][0];
-        int r = intervals[0][1];
-        for(int i = 1; i < intervals.size(); i++){
-            if(intervals[i][0] <= r)
-                r = max(r, intervals[i][1]);
-            else{
-                ans.push_back({l,r});
-                l = intervals[i][0];
-                r = intervals[i][1];
-            }
-        }
-        ans.push_back({l,r});
-        return ans;
+class Solution{
+  public:
+    // arr[]: Input Array
+    // N : Size of the Array arr[]
+    // Function to count inversions in the array.
+    long long int inversionCount(long long arr[], long long N)
+    {
+        // Your Code Here
+        long long inv_count = 0;
+        for (int i = 0; i < N - 1; i++)
+            for (int j = i + 1; j < N; j++)
+                if (arr[i] > arr[j])
+                    inv_count++;
+
+    return inv_count;
     }
+
 };
 
 // { Driver Code Starts.
-int main(){
-	int tc;
-	cin >> tc;
-	while(tc--){
-		int n;
-		cin >> n;
-		vector<vector<int>>Intervals(n);
-		for(int i = 0; i < n; i++){
-			int x, y;
-			cin >> x >> y;
-			Intervals[i].push_back(x);
-			Intervals[i].push_back(y);
-		}
-		Solution obj;
-		vector<vector<int>> ans = obj.overlappedInterval(Intervals);
-		for(auto i: ans){
-			for(auto j: i){
-				cout << j << " ";
-			}
-		}
-		cout << "\n";
-	}
-	return 0;
-}  // } Driver Code Ends
+
+int main() {
+    
+    long long T;
+    cin >> T;
+    
+    while(T--){
+        long long N;
+        cin >> N;
+        
+        long long A[N];
+        for(long long i = 0;i<N;i++){
+            cin >> A[i];
+        }
+        Solution obj;
+        cout << obj.inversionCount(A,N) << endl;
+    }
+    
+    return 0;
+}
+  // } Driver Code Ends
