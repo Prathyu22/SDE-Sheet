@@ -1,48 +1,70 @@
-//https://practice.geeksforgeeks.org/problems/count-pairs-with-given-sum5022/1#
-
-//Initial template for C++
+//https://practice.geeksforgeeks.org/problems/common-elements1132/1
 
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
-//User function template for C++
 
-class Solution{   
-public:
-    int getPairsCount(int arr[], int n, int k) {
-        // code here
-        unordered_map<int,int> m;
-        int ans = 0;
-        for(int i=0; i<n; i++)
+ // } Driver Code Ends
+class Solution
+{
+    public:    
+       vector <int> commonElements (int A[], int B[], int C[], int n1, int n2, int n3)
         {
-            int b = k - arr[i];
-            if(m[b])
+            //code here.
+            int i=0, j=0, k=0;
+            vector<int> v;
+            
+            while(i<n1 and j<n2 and k<n3)
             {
-                ans = ans + m[b];
+                if(A[i]==B[j] and B[j]==C[k])
+                {
+                    v.push_back(A[i]);
+                    i++;
+                    j++;
+                    k++;
+                }
+                else if(A[i] < B[j])   i++;
+                else if(B[j] < C[k])   j++;
+                else                   k++;
+                
+                //the below code is to eliminate the duplicates before pushing into the vector.
+                while(A[i] == A[i-1])  i++;
+                while(B[j] == B[j-1])  j++;
+                while(C[k] == C[k-1])  k++;
             }
-            m[arr[i]]++;
+            
+            if(v.size() == 0)
+               return {-1}; // {-1} is returned since we need to return a vector.
+            else
+               return v;
         }
-        return ans;
-    }
+
 };
 
 // { Driver Code Starts.
 
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n, k;
-        cin >> n >> k;
-        int arr[n];
-        for (int i = 0; i < n; i++) {
-            cin >> arr[i];
-        }
+int main ()
+{
+    int t; cin >> t;
+    while (t--)
+    {
+        int n1, n2, n3; 
+        cin >> n1 >> n2 >> n3;
+        int A[n1];
+        int B[n2];
+        int C[n3];
+        
+        for (int i = 0; i < n1; i++) cin >> A[i];
+        for (int i = 0; i < n2; i++) cin >> B[i];
+        for (int i = 0; i < n3; i++) cin >> C[i];
+        
         Solution ob;
-        auto ans = ob.getPairsCount(arr, n, k);
-        cout << ans << "\n";
+        
+        vector <int> res = ob.commonElements (A, B, C, n1, n2, n3);
+        if (res.size () == 0) 
+            cout << -1;
+        for (int i = 0; i < res.size (); i++) 
+            cout << res[i] << " "; 
+        cout << endl;
     }
-    
-    return 0;
 }  // } Driver Code Ends
