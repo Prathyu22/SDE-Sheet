@@ -1,70 +1,82 @@
-//https://practice.geeksforgeeks.org/problems/common-elements1132/1
+//https://practice.geeksforgeeks.org/problems/-rearrange-array-alternately-1587115620/1#
 
+// C++ program to rearrange an array in minimum 
+// maximum form 
 #include <bits/stdc++.h>
 using namespace std;
 
 
  // } Driver Code Ends
-class Solution
-{
-    public:    
-       vector <int> commonElements (int A[], int B[], int C[], int n1, int n2, int n3)
-        {
-            //code here.
-            int i=0, j=0, k=0;
-            vector<int> v;
-            
-            while(i<n1 and j<n2 and k<n3)
-            {
-                if(A[i]==B[j] and B[j]==C[k])
-                {
-                    v.push_back(A[i]);
-                    i++;
-                    j++;
-                    k++;
-                }
-                else if(A[i] < B[j])   i++;
-                else if(B[j] < C[k])   j++;
-                else                   k++;
-                
-                //the below code is to eliminate the duplicates before pushing into the vector.
-                while(A[i] == A[i-1])  i++;
-                while(B[j] == B[j-1])  j++;
-                while(C[k] == C[k-1])  k++;
-            }
-            
-            if(v.size() == 0)
-               return {-1}; // {-1} is returned since we need to return a vector.
-            else
-               return v;
-        }
-
+class Solution{
+    public:
+    // This function wants you to modify the given input
+    // array and no need to return anything
+    // arr: input array
+    // n: size of array
+    //Function to rearrange  the array elements alternately.
+    void rearrange(long long *arr, int n) 
+    { 
+    	
+    	// Your code here
+    	int max_ele = arr[n-1] + 1;
+    	int min = 0;
+    	int max = n-1;
+    	for(int i=0; i<n; i++)
+    	{
+    	    if(i%2 == 0)
+    	    {
+    	        arr[i] = arr[i] + arr[max] % max_ele * max_ele;
+    	        max--;
+    	    }
+    	    else
+    	    {
+    	        arr[i] = arr[i] + arr[min] % max_ele * max_ele;
+    	        min++;
+    	    }
+    	}
+    	
+    	for(int i=0; i<n; i++)
+    	{
+    	    arr[i] = arr[i] / max_ele;
+    	}
+    	 
+    }
 };
 
 // { Driver Code Starts.
 
-int main ()
+// Driver program to test above function 
+int main() 
 {
-    int t; cin >> t;
-    while (t--)
-    {
-        int n1, n2, n3; 
-        cin >> n1 >> n2 >> n3;
-        int A[n1];
-        int B[n2];
-        int C[n3];
+    int t;
+    
+    //testcases
+    cin >> t;
+    
+    while(t--){
         
-        for (int i = 0; i < n1; i++) cin >> A[i];
-        for (int i = 0; i < n2; i++) cin >> B[i];
-        for (int i = 0; i < n3; i++) cin >> C[i];
+        //size of array
+        int n;
+        cin >> n;
+        
+        long long arr[n];
+        
+        //adding elements to the array
+        for(int i = 0;i<n;i++){
+            cin >> arr[i];
+        }
         
         Solution ob;
         
-        vector <int> res = ob.commonElements (A, B, C, n1, n2, n3);
-        if (res.size () == 0) 
-            cout << -1;
-        for (int i = 0; i < res.size (); i++) 
-            cout << res[i] << " "; 
-        cout << endl;
+        //calling rearrange() function
+        ob.rearrange(arr, n);
+        
+        //printing the elements
+        for (int i = 0; i < n; i++) 
+		    cout << arr[i] << " ";
+		
+		cout << endl;
     }
-}  // } Driver Code Ends
+	return 0; 
+} 
+  // } Driver Code Ends
