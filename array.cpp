@@ -1,82 +1,56 @@
-//https://practice.geeksforgeeks.org/problems/-rearrange-array-alternately-1587115620/1#
+//https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1#
 
-// C++ program to rearrange an array in minimum 
-// maximum form 
+// A C++ program to find if there is a zero sum
+// subarray
 #include <bits/stdc++.h>
 using namespace std;
+
 
 
  // } Driver Code Ends
 class Solution{
     public:
-    // This function wants you to modify the given input
-    // array and no need to return anything
-    // arr: input array
-    // n: size of array
-    //Function to rearrange  the array elements alternately.
-    void rearrange(long long *arr, int n) 
-    { 
-    	
-    	// Your code here
-    	int max_ele = arr[n-1] + 1;
-    	int min = 0;
-    	int max = n-1;
-    	for(int i=0; i<n; i++)
-    	{
-    	    if(i%2 == 0)
-    	    {
-    	        arr[i] = arr[i] + arr[max] % max_ele * max_ele;
-    	        max--;
-    	    }
-    	    else
-    	    {
-    	        arr[i] = arr[i] + arr[min] % max_ele * max_ele;
-    	        min++;
-    	    }
-    	}
-    	
-    	for(int i=0; i<n; i++)
-    	{
-    	    arr[i] = arr[i] / max_ele;
-    	}
-    	 
+    //Complete this function
+    //Function to check whether there is a subarray present with 0-sum or not.
+    bool subArrayExists(int arr[], int n)
+    {
+        //Your code here
+        unordered_set<int> sumset;
+        
+        //Traverse through array and store prefix sums.
+        int sum = 0;
+        for(int i=0; i<n; i++)
+        {
+            sum += arr[i];
+            //If prefix sum is 0 or already present in unordered_set ......
+            if(sum == 0 || sumset.find(sum) != sumset.end())    return true;
+            
+            sumset.insert(sum);
+        }
+        
+        return false;
+        
     }
 };
 
 // { Driver Code Starts.
-
-// Driver program to test above function 
-int main() 
+// Driver code
+int main()
 {
-    int t;
-    
-    //testcases
-    cin >> t;
-    
-    while(t--){
-        
-        //size of array
-        int n;
-        cin >> n;
-        
-        long long arr[n];
-        
-        //adding elements to the array
-        for(int i = 0;i<n;i++){
-            cin >> arr[i];
-        }
-        
-        Solution ob;
-        
-        //calling rearrange() function
-        ob.rearrange(arr, n);
-        
-        //printing the elements
-        for (int i = 0; i < n; i++) 
-		    cout << arr[i] << " ";
-		
-		cout << endl;
-    }
-	return 0; 
-} 
-  // } Driver Code Ends
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    int n;
+	    cin>>n;
+	    int arr[n];
+	    for(int i=0;i<n;i++)
+	    cin>>arr[i];
+	    Solution obj;
+	    	if (obj.subArrayExists(arr, n))
+		cout << "Yes\n";
+	else
+		cout << "No\n";
+	}
+	return 0;
+}  // } Driver Code Ends
