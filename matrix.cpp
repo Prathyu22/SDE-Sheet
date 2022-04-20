@@ -1,21 +1,61 @@
-//https://leetcode.com/problems/search-a-2d-matrix/
+//https://practice.geeksforgeeks.org/problems/sorted-matrix2333/1#
+
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+// User function Template for C++
 
 class Solution {
-public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int r = matrix.size(); // row length
-        int c = matrix[0].size(); // column length
-        int low = 0;
-        int high = (r*c)-1;
-        int mid;
+  public:
+    vector<vector<int>> sortedMatrix(int N, vector<vector<int>> Mat) {
+        // code here
+       vector<int> v;
         
-        while(low<=high)
+        for(int i=0; i<N; i++)
         {
-            mid = low + (high-low)/2;
-            if(matrix[mid/c][mid%c] == target) return true;
-            else if(matrix[mid/c][mid%c] < target) low = mid+1;
-            else high = mid-1;
+            for(int j=0; j<N; j++)
+            {
+                v.push_back(Mat[i][j]);
+            }
         }
-        return false;
+        
+        sort(v.begin(),v.end());
+        
+        vector<vector<int>> ans(N, vector<int>(N));
+        int k = 0;
+        
+        for(int i=0; i<N; i++)
+        {
+            for(int j=0; j<N; j++)
+            {
+                ans[i][j] = v[k];
+                k++;
+            }
+        }
+         
+        return ans;
     }
 };
+
+// { Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int N;
+        cin >> N;
+        vector<vector<int>> v(N, vector<int>(N));
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++) cin >> v[i][j];
+        Solution ob;
+        v = ob.sortedMatrix(N, v);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) cout << v[i][j] << " ";
+            cout << "\n";
+        }
+    }
+}  // } Driver Code Ends
