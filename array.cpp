@@ -1,52 +1,60 @@
-//https://practice.geeksforgeeks.org/problems/factorials-of-large-numbers2508/1#
+//https://practice.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1#
 
-// Initial Template for C++
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
-//User function template for C++
 
-class Solution {
-public:
-    vector<int> factorial(int N){
-        // code here
-        vector<int> v;
-        v.push_back(1);
-        for(int x=2; x<=N; x++)
-        {
-            int carry = 0;
-            for(int i=0; i<v.size(); i++)
-            {
-                int val = v[i]*x + carry;
-                v[i] = val % 10;
-                carry = val / 10;
-            }
-            while(carry != 0)
-            {
-                v.push_back(carry % 10);
-                carry /= 10;
-            }
-        }
-        reverse(v.begin(), v.end());
-        return v;
+ // } Driver Code Ends
+class Solution{
+  public:
+    // arr[] : the input array
+    // N : size of the array arr[]
+    
+    //Function to return length of longest subsequence of consecutive integers.
+    int findLongestConseqSubseq(int arr[], int N)
+    {
+      //Your code here
+      
+      //unordered_set using hashing, which takes o(1) for any operation on it.
+      unordered_set<int> s;
+      int len = 0;
+      
+      //hashing all the elements into the set taken.
+      for(int i=0; i<N; i++)
+      {
+          s.insert(arr[i]);
+      }
+      
+      for(int i=0; i<N; i++)
+      {
+          if(s.find(arr[i]-1) == s.end())
+          {
+              int j = arr[i];
+              while(s.find(j) != s.end())
+                 j++;
+              
+              len = max(len,j-arr[i]);
+          }
+      }
+      return len;
     }
 };
 
 // { Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int N;
-        cin >> N;
-        Solution ob;
-        vector<int> result = ob.factorial(N);
-        for (int i = 0; i < result.size(); ++i){
-            cout<< result[i];
-        }
-        cout << endl;
-    }
+ 
+// Driver program
+int main()
+{
+ int  t,n,i,a[100001];
+ cin>>t;
+ while(t--)
+ {
+  cin>>n;
+  for(i=0;i<n;i++)
+  cin>>a[i];
+  Solution obj;
+  cout<<obj.findLongestConseqSubseq(a, n)<<endl;
+ }
+      
     return 0;
 }  // } Driver Code Ends
