@@ -1,4 +1,4 @@
-//https://practice.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1#
+//https://practice.geeksforgeeks.org/problems/smallest-subarray-with-sum-greater-than-x5651/1
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -7,54 +7,42 @@ using namespace std;
  // } Driver Code Ends
 class Solution{
   public:
-    // arr[] : the input array
-    // N : size of the array arr[]
-    
-    //Function to return length of longest subsequence of consecutive integers.
-    int findLongestConseqSubseq(int arr[], int N)
+
+    int smallestSubWithSum(int arr[], int n, int x)
     {
-      //Your code here
-      
-      //unordered_set using hashing, which takes o(1) for any operation on it.
-      unordered_set<int> s;
-      int len = 0;
-      
-      //hashing all the elements into the set taken.
-      for(int i=0; i<N; i++)
-      {
-          s.insert(arr[i]);
-      }
-      
-      for(int i=0; i<N; i++)
-      {
-          if(s.find(arr[i]-1) == s.end())
-          {
-              int j = arr[i];
-              while(s.find(j) != s.end())
-                 j++;
-              
-              len = max(len,j-arr[i]);
-          }
-      }
-      return len;
+        // Your code goes here  
+        int min_len = n;
+        int sum = 0;
+        int i = 0, j = 0;
+        
+        for(j=0; j<n; j++)
+        {
+            sum = sum + arr[j];
+            while(sum > x)
+            {
+                min_len = min(min_len, j-i+1);
+                sum = sum - arr[i++];
+            }
+        }
+        return min_len;
     }
 };
 
 // { Driver Code Starts.
- 
-// Driver program
-int main()
-{
- int  t,n,i,a[100001];
- cin>>t;
- while(t--)
- {
-  cin>>n;
-  for(i=0;i<n;i++)
-  cin>>a[i];
-  Solution obj;
-  cout<<obj.findLongestConseqSubseq(a, n)<<endl;
- }
-      
-    return 0;
+
+int main() {
+	// your code goes here
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,x;
+		cin>>n>>x;
+		int a[n];
+		for(int i=0;i<n;i++)
+		cin>>a[i];
+		Solution obj;
+		cout<<obj.smallestSubWithSum(a,n,x)<<endl;
+	}
+	return 0;
 }  // } Driver Code Ends
