@@ -1,77 +1,50 @@
-//https://practice.geeksforgeeks.org/problems/minimum-swaps-required-to-bring-all-elements-less-than-or-equal-to-k-together4847/1#
+//https://practice.geeksforgeeks.org/problems/palindromic-array-1587115620/1#
 
-// C++ program to find minimum swaps required
-// to club all elements less than or equals
-// to k together
-#include <bits/stdc++.h>
+#include<iostream>
+#include<string.h>
 using namespace std;
 
 
-
  // } Driver Code Ends
+/*Complete the function below*/
 
-
-class Solution
-{
+class Solution {
 public:
-    int minSwap(int arr[], int n, int k) {
-        // Complete the function
-        int total = 0; // no. of elements <= K
-        int swap_count = 0;
-        
-        for(int i=0; i<n; i++)
-        {
-            if(arr[i] <= k)
-              total++;
-        }
-        
-        // first sliding window
-        for(int i=0; i<total; i++)
-        {
-            if(arr[i] > k)
-              swap_count++;
-        }
-        
-        //leaving one element from left and 
-        //adding one element in the right part like a sliding window.
-        int i = 0;
-        int j = total;
-        int min_swaps = swap_count; // "min" holds min no. of swaps.
-        while(j<n)
-        {
-            if(arr[i] > k)
-              swap_count--;
-            
-            if(arr[j] > k)
-              swap_count++;
-            
-            min_swaps = min(min_swaps,swap_count);
-            
-            i++;
-            j++;
-        }
-        return min_swaps;
+    int PalinArray(int a[], int n)
+    {
+    	// code here
+    	for(int i=0; i<n; i++){
+    	    int temp = a[i];
+    	    int rev = 0;
+    	    while(temp!=0)
+    	    {
+    	        int rem = temp % 10;
+    	        rev = rev*10 + rem;
+    	        temp = temp/10;
+    	    }
+    	    if(rev != a[i])
+    	    {
+    	        return 0;
+    	    }
+    	}
+    	return 1;
     }
 };
 
-
 // { Driver Code Starts.
 
-// Driver code
-int main() {
-
-	int t,n,k;
+int main()
+{
+	int t;
 	cin>>t;
 	while(t--)
-    {
-        cin>>n;
-        int arr[n];
-        for(int i=0;i<n;i++)
-            cin>>arr[i];
-        cin>>k;
-        Solution ob;
-        cout << ob.minSwap(arr, n, k) << "\n";
-    }
-	return 0;
-}
-  // } Driver Code Ends
+	{
+		int n;
+		cin>>n;
+		int a[n];
+		for(int i = 0; i < n; i++)
+			cin>>a[i];
+		Solution obj;
+		cout<<obj.PalinArray(a,n)<<endl;
+	}
+}  // } Driver Code Ends
