@@ -1,50 +1,50 @@
-//https://practice.geeksforgeeks.org/problems/palindromic-array-1587115620/1#
+//https://practice.geeksforgeeks.org/problems/find-the-median0527/1#
 
-#include<iostream>
-#include<string.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-
  // } Driver Code Ends
-/*Complete the function below*/
-
-class Solution {
+class Solution
+{
 public:
-    int PalinArray(int a[], int n)
-    {
-    	// code here
-    	for(int i=0; i<n; i++){
-    	    int temp = a[i];
-    	    int rev = 0;
-    	    while(temp!=0)
-    	    {
-    	        int rem = temp % 10;
-    	        rev = rev*10 + rem;
-    	        temp = temp/10;
-    	    }
-    	    if(rev != a[i])
-    	    {
-    	        return 0;
-    	    }
-    	}
-    	return 1;
-    }
+	public:
+		int find_median(vector<int> v)
+		{
+		    // Code here.
+		    sort(v.begin(),v.end());
+		    int n = v.size();
+		    int i = 0;
+		    int j = n-1;
+		    float median;
+		    int mid = (i+j)/2;
+		    
+		    if(n%2 == 0)
+		    {
+		        median = (v[mid]+v[mid+1])/2;
+		        return median;
+		    }
+		    else
+		    {
+		        return v[mid];
+		    }
+		}
 };
 
 // { Driver Code Starts.
-
-int main()
-{
-	int t;
-	cin>>t;
-	while(t--)
-	{
-		int n;
-		cin>>n;
-		int a[n];
-		for(int i = 0; i < n; i++)
-			cin>>a[i];
-		Solution obj;
-		cout<<obj.PalinArray(a,n)<<endl;
-	}
-}  // } Driver Code Ends
+int main(){
+    int T;
+    cin >> T;
+    while(T--)
+    {
+    	int n; 
+    	cin >> n;
+    	vector<int> v(n);
+    	for(int i = 0; i < n; i++)
+    		cin>>v[i];
+    	Solution ob;
+    	int ans = ob.find_median(v);
+    	cout << ans <<"\n";
+    }
+	return 0;
+}
+  // } Driver Code Ends
