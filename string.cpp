@@ -1,4 +1,4 @@
-//https://practice.geeksforgeeks.org/problems/parenthesis-checker2744/1
+//https://practice.geeksforgeeks.org/problems/longest-palindrome-in-a-string3411/1
 
 //{ Driver Code Starts
 #include<bits/stdc++.h>
@@ -6,52 +6,63 @@ using namespace std;
 
 
 // } Driver Code Ends
-
-
-class Solution
-{
-    public:
-    //Function to check if brackets are balanced or not.
-    bool ispar(string x)
+class Solution {
+  public:
+    string reverse(string s, int i, int j)
     {
-        // Your code here
-        stack<char> s;
-        for(int i=0; i<x.size(); i++)
+        int ii =i;
+        int jj = j;
+        while(i<=j)
         {
-            if(x[i] == '(' || x[i] == '{' || x[i] == '[')
+            swap(s[i++],s[j--]);
+        }
+        return s.substr(ii,jj-ii+1);
+    }
+  
+    string longestPalin (string S) {
+        // code here
+        string s2 = "";
+        int max_length = 1;
+        int i_index;
+        int j_index;
+        for(int i=0; i<S.size(); i++)
+        {
+            for(int j=i; j<S.size(); j++)
             {
-                s.push(x[i]);
-            }
-            else
-            {
-                if(s.empty()) return false;
-                else if(s.top() == '(' && x[i] != ')') return false;
-                else if(s.top() == '{' && x[i] != '}') return false;
-                else if(s.top() == '[' && x[i] != ']') return false;
-                else s.pop();
+                if(reverse(S,i,j) == S.substr(i,j-i+1))
+                {
+                    if(max_length < j-i+1)
+                    {
+                        max_length = j-i+1;
+                         i_index = i;
+                         j_index = j;
+                    }
+                }
             }
         }
-        if(s.empty()) return true;
-        else return false;
+        
+        if(max_length == 1)
+        {
+            s2 = S[0];
+            return s2;
+        }
+        return S.substr(i_index,max_length);
     }
-
 };
 
 //{ Driver Code Starts.
 
 int main()
 {
-   int t;
-   string a;
-   cin>>t;
-   while(t--)
-   {
-       cin>>a;
-       Solution obj;
-       if(obj.ispar(a))
-        cout<<"balanced"<<endl;
-       else
-        cout<<"not balanced"<<endl;
-   }
+    int t; cin >> t;
+    while (t--)
+    {
+        string S; cin >> S;
+        
+        Solution ob;
+        cout << ob.longestPalin (S) << endl;
+    }
 }
+// Contributed By: Pranay Bansal
+
 // } Driver Code Ends
