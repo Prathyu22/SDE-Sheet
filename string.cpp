@@ -1,51 +1,57 @@
-//https://practice.geeksforgeeks.org/problems/palindrome-string0817/1
+//https://practice.geeksforgeeks.org/problems/parenthesis-checker2744/1
 
 //{ Driver Code Starts
- 
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 
 // } Driver Code Ends
-//User function template for C++
-class Solution{
-public:	
-	
-	
-	int isPalindrome(string S)
-	{
-	    // Your code goes here
-	    int i=0, j=S.size()-1;
-	    
-	    while(i<=j)
-	    {
-	        if(S[i++] != S[j--]) return 0;
-	    }
-	    return 1;
-	}
+
+
+class Solution
+{
+    public:
+    //Function to check if brackets are balanced or not.
+    bool ispar(string x)
+    {
+        // Your code here
+        stack<char> s;
+        for(int i=0; i<x.size(); i++)
+        {
+            if(x[i] == '(' || x[i] == '{' || x[i] == '[')
+            {
+                s.push(x[i]);
+            }
+            else
+            {
+                if(s.empty()) return false;
+                else if(s.top() == '(' && x[i] != ')') return false;
+                else if(s.top() == '{' && x[i] != '}') return false;
+                else if(s.top() == '[' && x[i] != ']') return false;
+                else s.pop();
+            }
+        }
+        if(s.empty()) return true;
+        else return false;
+    }
 
 };
 
 //{ Driver Code Starts.
 
-int main() 
+int main()
 {
-   	ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-   
-   	int t;
-   	cin >> t;
-   	while(t--)
-   	{
-   		string s;
-   		cin >> s;
-
-   	    Solution ob;
-
-   		cout << ob.isPalindrome(s) << "\n";
-   	}
-
-    return 0;
+   int t;
+   string a;
+   cin>>t;
+   while(t--)
+   {
+       cin>>a;
+       Solution obj;
+       if(obj.ispar(a))
+        cout<<"balanced"<<endl;
+       else
+        cout<<"not balanced"<<endl;
+   }
 }
 // } Driver Code Ends
