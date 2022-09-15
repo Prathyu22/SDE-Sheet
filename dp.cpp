@@ -1,6 +1,6 @@
 //https://www.codingninjas.com/codestudio/problems/frog-jump_3621012?leftPanelTab=0
 
-int frogJump(int n, vector<int> &heights)
+/*int frogJump(int n, vector<int> &heights)
 {
     // Write your code here.
     /* 
@@ -18,6 +18,7 @@ int frogJump(int n, vector<int> &heights)
     
     // DP with TC = O(N) and SC = O(1)
     
+    /*
     int prev1 = 0;
     int prev2 = 0;
     int fs, ss = 1001;
@@ -30,4 +31,5 @@ int frogJump(int n, vector<int> &heights)
         prev1 = curr;
     }
     return prev1;
-}
+} 
+*/
