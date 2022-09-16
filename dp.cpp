@@ -1,35 +1,55 @@
-//https://www.codingninjas.com/codestudio/problems/frog-jump_3621012?leftPanelTab=0
+//https://www.codingninjas.com/codestudio/problems/maximum-sum-of-non-adjacent-elements_843261?leftPanelTab=0
 
-/*int frogJump(int n, vector<int> &heights)
-{
+#include <bits/stdc++.h> 
+/* ---------------- Recursion ---------------------- */
+/*int func(int n, vector<int>& nums){
+    //Base cases.
+    if(n == 0) return nums[n];
+    if(n < 0) return 0;
+    
+    int pick = nums[n] + func(n - 2, nums);
+    int not_pick = 0 + func(n-1, nums);
+    
+    return max(pick, not_pick);
+}*/
+
+/* ---------------------- Memoization ------------------ */
+/*int func(int n, vector<int>& nums, vector<int>& dp){
+    //Base cases.
+    if(n == 0) return nums[n];
+    if(n < 0) return 0;
+    
+    if(dp[n] != -1) return dp[n];
+    int pick = nums[n] + func(n - 2, nums, dp);
+    int not_pick = 0 + func(n-1, nums, dp);
+    
+    return dp[n] = max(pick, not_pick);
+}*/
+
+int maximumNonAdjacentSum(vector<int> &nums){
     // Write your code here.
-    /* 
-    //DYNAMIC PROGRAMMING WITH TC = O(N) AND SC = O(N).
-    vector<int> dp(n, -1);
-    int fs, ss = 1001;
-    dp[0] = 0;
-    for(int i=1; i<=n-1; i++){
-        fs = dp[i-1] + abs(heights[i] - heights[i-1]);
-        if(i > 1)
-            ss = dp[i-2] + abs(heights[i] - heights[i-2]);
-       dp[i] = min(fs, ss);
-    }
-    return dp[n-1]; */
+    /* ---------------- Recursion ---------------------- */
+    int n = nums.size();
+    /* return func(n-1, nums); */
+/* ---------------------- Memoization ------------------ */
+    /*vector<int> dp(n, -1);
+    return func(n-1, nums, dp);*/
     
-    // DP with TC = O(N) and SC = O(1)
-    
-    /*
-    int prev1 = 0;
+/* --- Tabulation with space optimization TC = O(n) and SC = o(1) --- */
+    int prev = nums[0];
     int prev2 = 0;
-    int fs, ss = 1001;
-    for(int i=1; i<=n-1; i++){
-        fs = prev1 + abs(heights[i] - heights[i-1]);
-        if(i > 1)
-            ss = prev2 + abs(heights[i] - heights[i-2]);
-        int curr = min(fs, ss);
-        prev2 = prev1;
-        prev1 = curr;
+    
+    for(int i=1; i<n; i++){
+        int pick = nums[i];
+        if(i > 1) pick += prev2;
+        
+        int not_pick = 0 + prev;
+        
+        int curr = max(pick, not_pick);
+        
+        prev2 = prev;
+        prev = curr;
     }
-    return prev1;
-} 
-*/
+    return prev;
+    
+}
