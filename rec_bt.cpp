@@ -1,45 +1,58 @@
-//https://www.codingninjas.com/codestudio/problems/unique-subsets_3625236?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+//https://www.codingninjas.com/codestudio/problems/759331?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
 
 /*
-Subset – II | Print all the Unique Subsets
-Problem Statement: Given an array of integers that may contain duplicates the task is to return all possible subsets. Return only unique subsets and they can be in any order.
+Combination Sum – 1
+Problem Statement: 
+
+Given an array of distinct integers and a target, you have to return the list of all unique combinations where the chosen numbers sum to target. You may return the combinations in any order.
+
+The same number may be chosen from the given array an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+
+It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
 
 Examples:
 
 Example 1:
 
-Input: array[] = [1,2,2]
+Input: array = [2,3,6,7], target = 7
 
-Output: [ [ ],[1],[1,2],[1,2,2],[2],[2,2] ]
+Output: [[2,2,3],[7]]
 
-Explanation: We can have subsets ranging from  length 0 to 3. which are listed above. Also the subset [1,2] appears twice but is printed only once as we require only unique subsets.
+Explanation: 2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+             7 is a candidate, and 7 = 7.
+             These are the only two combinations.
 
-Input: array[] = [1]
 
-Output: [ [ ], [1] ]
+Example 2:
 
-Explanation: Only two unique subsets are available
+Input: array = [2], target = 1
+
+Output: []
+
+Explaination: No combination is possible.
 */
 
-#include <bits/stdc++.h> 
-
-void func(int ind, vector<int>& arr, vector<int>& ds, vector<vector<int>>& ans)
+void func(int i, vector<int>& arr, vector<vector<int>>& ans, vector<int>& ds, int n, int k, int sum)
 {
-    ans.push_back(ds);
-    for(int i=ind; i<arr.size(); i++){
-        if( (i != ind) && (arr[i] == arr[i-1]) ) continue;
-        ds.push_back(arr[i]);
-        func(i+1, arr, ds, ans);
-        ds.pop_back();
+    if(i >= n){
+        if(sum == k){
+            ans.push_back(ds);
+        }
+        return;
     }
+    //pick
+    ds.push_back(arr[i]);
+    func(i+1, arr, ans, ds, n, k, sum+arr[i]);
+    ds.pop_back();
+    func(i+1, arr, ans, ds, n, k, sum);
 }
 
-vector<vector<int>> uniqueSubsets(int n, vector<int> &arr)
+vector<vector<int>> findSubsetsThatSumToK(vector<int> arr, int n, int k)
 {
     // Write your code here.
     vector<vector<int>> ans;
     vector<int> ds;
-    sort(arr.begin(), arr.end());
-    func(0, arr, ds, ans);
+    
+    func(0, arr, ans, ds, n, k, 0);
     return ans;
 }
