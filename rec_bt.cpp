@@ -1,58 +1,64 @@
-//https://www.codingninjas.com/codestudio/problems/759331?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+//https://www.codingninjas.com/codestudio/problems/1112622?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
 
 /*
-Combination Sum – 1
-Problem Statement: 
+Combination Sum II – Find all unique combinations
+In this article we will solve the most asked interview question “Combination Sum II – Find all unique combinations”.
 
-Given an array of distinct integers and a target, you have to return the list of all unique combinations where the chosen numbers sum to target. You may return the combinations in any order.
+Problem Statement: Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target. Each number in candidates may only be used once in the combination.
 
-The same number may be chosen from the given array an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
-
-It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+Note: The solution set must not contain duplicate combinations.
 
 Examples:
 
 Example 1:
 
-Input: array = [2,3,6,7], target = 7
+Input: candidates = [10,1,2,7,6,1,5], target = 8
 
-Output: [[2,2,3],[7]]
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]]
 
-Explanation: 2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
-             7 is a candidate, and 7 = 7.
-             These are the only two combinations.
 
-
+Explanation: These are the unique combinations whose sum is equal to target.
+ 
 Example 2:
 
-Input: array = [2], target = 1
+Input: candidates = [2,5,2,1,2], target = 5
 
-Output: []
+Output: [[1,2,2],[5]]
 
-Explaination: No combination is possible.
+Explanation: These are the unique combinations whose sum is equal to target.
 */
 
-void func(int i, vector<int>& arr, vector<vector<int>>& ans, vector<int>& ds, int n, int k, int sum)
+#include <bits/stdc++.h>
+void func(int ind, vector<int>& arr, int n, int k, vector<vector<int>>& ans, vector<int>& ds, int sum)
 {
-    if(i >= n){
+    
         if(sum == k){
             ans.push_back(ds);
+            return;
         }
-        return;
+    
+    for(int i=ind; i<n; i++){
+        if(i != ind && arr[i] == arr[i-1]) continue;
+        if(arr[i] > k) break;
+        ds.push_back(arr[i]);
+        func(i+1, arr, n, k, ans, ds, sum+arr[i]);
+        ds.pop_back();
+        //func(i+1, arr, n, k, ans, ds, sum);
     }
-    //pick
-    ds.push_back(arr[i]);
-    func(i+1, arr, ans, ds, n, k, sum+arr[i]);
-    ds.pop_back();
-    func(i+1, arr, ans, ds, n, k, sum);
 }
 
-vector<vector<int>> findSubsetsThatSumToK(vector<int> arr, int n, int k)
+vector<vector<int>> combinationSum2(vector<int> &arr, int n, int target)
 {
-    // Write your code here.
+	// Write your code here.
     vector<vector<int>> ans;
     vector<int> ds;
-    
-    func(0, arr, ans, ds, n, k, 0);
+    sort(arr.begin(), arr.end());
+    func(0, arr, n, target, ans, ds, 0);
+    sort(ans.begin(), ans.end());
     return ans;
 }
