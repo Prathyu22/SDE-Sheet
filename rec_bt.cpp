@@ -1,98 +1,55 @@
-//https://leetcode.com/problems/permutations/
-
+//https://www.codingninjas.com/codestudio/problems/1112626?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website
 /*
-Print All Permutations of a String/Array
-Problem Statement: Given an array arr of distinct integers, print all permutations of String/Array.
+Find K-th Permutation Sequence
+Problem Statement: Given N and K, where N is the sequence of numbers from 1 to N([1,2,3….. N]) find the Kth permutation sequence.
+
+For N = 3  the 3!  Permutation sequences in order would look like this:-
+
+
+
+Note: 1<=K<=N! Hence for a given input its Kth permutation always exists
 
 Examples:
 
-Example 1: 
+Example 1:
 
-Input: arr = [1, 2, 3]
+Input: N = 3, K = 3
+ 
+Output: “213”
 
-Output: 
-[
-  [1, 2, 3],
-  [1, 3, 2],
-  [2, 1, 3],
-  [2, 3, 1],
-  [3, 1, 2],
-  [3, 2, 1]
-]
-
-Explanation: Given an array, return all the possible permutations.
+Explanation: The sequence has 3! permutations as illustrated in the figure above. K = 3 corresponds to the third sequence.
 
 Example 2:
 
-Input: arr = [0, 1]
+Input: N = 3, K = 5 
 
-Output:
-[
-  [0, 1],
-  [1, 0]
-]
+Result: “312”
 
-Explanation: Given an array, return all the possible permutations.
+Explanation: The sequence has 3! permutations as illustrated in the figure above. K = 5 corresponds to the fifth sequence.
 */
 
-class Solution {
-private:
-    /*------ TC = n! * n and SC = O(n) + O(n) ------------ */
-    /*
-    void func(vector<int>& nums, vector<int>& ds, vector<vector<int>>& ans, int map[])
+#include <bits/stdc++.h>
+using namespace std;
+
+string kthPermutation(int n, int k) {
+    // Write your code here. 
+    int fact = 1;
+    vector<int> num;
+    for(int i=1; i<n; i++)
     {
-        if(ds.size() == nums.size())
-        {
-            ans.push_back(ds);
-            return;
-        }
-        for(int i=0; i<nums.size(); i++)
-        {
-            if(!map[i])
-            {
-                ds.push_back(nums[i]);
-                map[i] = 1;
-                func(nums, ds, ans, map);
-                map[i] = 0;
-                ds.pop_back();
-            }
-        }
+        fact = fact * i;
+        num.push_back(i);
     }
-public:
-    vector<vector<int>> permute(vector<int>& nums) {
-        vector<int> ds;
-        vector<vector<int>> ans;
-        int map[nums.size()];
-        for(int i=0; i<nums.size(); i++)
-        {
-            map[i] = 0;
-        }
-        func(nums, ds, ans, map);
-        return ans;
-    } */
-private:
-/* ---------- TC = n! * n and SC = O(1) -------------- */
-    void func(int ind, vector<int>& nums, vector<vector<int>>& ans)
+    num.push_back(n);
+    string ans = "";
+    k = k - 1;
+    while(true)
     {
-        if(ind == nums.size())
-        {
-            ans.push_back(nums);
-            return;
-        }
-        
-        for(int i=ind; i<nums.size(); i++)
-        {
-            swap(nums[ind],nums[i]);
-            func(ind+1, nums, ans);
-            swap(nums[ind], nums[i]);
-        }
+        ans = ans + to_string(num[k/fact]);
+        num.erase(num.begin() + k/fact);
+        if(num.size() == 0) break;
+        k = k % fact;
+        fact = fact / num.size();
     }
-    
-public:
-    vector<vector<int>> permute(vector<int>& nums) {
-        vector<vector<int>> ans;
-        func(0, nums, ans);
-        return ans;
-    }
-    
-};
+    return ans;
+}
