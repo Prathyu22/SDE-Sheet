@@ -1,146 +1,96 @@
-//https://leetcode.com/problems/n-queens/description/
+//https://leetcode.com/problems/sudoku-solver/description/
 
-/*N Queen Problem | Return all Distinct Solutions to the N-Queens Puzzle
-Problem Statement: The n-queens is the problem of placing n queens on n × n chessboard such that no two queens can attack each other. Given an integer n, return all distinct solutions to the n -queens puzzle. Each solution contains a distinct boards configuration of the queen’s placement, where ‘Q’ and ‘.’ indicate queen and empty space respectively.
+/*Sudoku Solver
+Problem Statement:
 
-Examples:
+Given a 9×9 incomplete sudoku, solve it such that it becomes valid sudoku. Valid sudoku has the following properties.
 
-Input: n = 4
+         1. All the rows should be filled with numbers(1 – 9) exactly once.
 
-Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+         2. All the columns should be filled with numbers(1 – 9) exactly once.
 
-Explanation: There exist two distinct solutions to the 4-queens puzzle as shown below
+         3. Each 3×3 submatrix should be filled with numbers(1 – 9) exactly once.
 
-Arrangement 1
-..Q.
-Q…
-…Q
-.Q..
+Note: Character ‘.’ indicates empty cell.
 
-Arrangement 2
-.Q..
-…Q
-Q…
-..Q.
-*/
+Example:
+
+Input:   
+        {'9', '5', '7', '.', '1', '3', '.', '8', '4'},
+        {'4', '8', '3', '.', '5', '7', '1', '.', '6'},
+        {'.', '1', '2', '.', '4', '9', '5', '3', '7'},
+        {'1', '7', '.', '3', '.', '4', '9', '.', '2'},
+        {'5', '.', '4', '9', '7', '.', '3', '6', '.'},
+        {'3', '.', '9', '5', '.', '8', '7', '.', '1'},
+        {'8', '4', '5', '7', '9', '.', '6', '1', '3'},
+        {'.', '9', '1', '.', '3', '6', '.', '7', '5'},
+        {'7', '.', '6', '1', '8', '5', '4', '.', '9'}       
+Output:
+9 5 7 6 1 3 2 8 4
+4 8 3 2 5 7 1 9 6
+6 1 2 8 4 9 5 3 7
+1 7 8 3 6 4 9 5 2
+5 2 4 9 7 1 3 6 8
+3 6 9 5 2 8 7 4 1
+8 4 5 7 9 2 6 1 3
+2 9 1 4 3 6 8 7 5
+7 3 6 1 8 5 4 2 9
+
+
+Explanation:
+ The empty cells are filled with the possible numbers. There can exist many such arrangements of numbers. The above solution is one of them.
+ */
 
 class Solution {
+/*
+Time Complexity: O(9(n ^ 2)), in the worst case, 
+for each cell in the n2 board, we have 9 possible numbers.
 
+Space Complexity: O(1), since we are refilling the given board itself, 
+there is no extra space required, so constant space complexity.
+*/
 public:
-    void solve(int col, vector<vector<string>>& ans, vector<string>& board, vector<int>& leftRow, vector<int>& leftDia, vector<int>& rightDia, int ind)
+    void solveSudoku(vector<vector<char>>& board) {
+        solve(board);
+    }
+
+    bool solve(vector<vector<char>>& board)
     {
-        if(col == ind)
+        for(int i=0; i<board.size(); i++)
         {
-            ans.push_back(board);
-            return;
-        }
-
-        for(int row=0; row<ind; row++)
-        {
-            if(leftRow[row] == 0 && leftDia[row+col] == 0 && rightDia[(ind-1)+col-row] == 0)
+            for(int j=0; j<board[0].size(); j++)
             {
-                board[row][col] = 'Q';
-                leftRow[row] = 1;
-                leftDia[row+col] = 1;
-                rightDia[ind-1+col-row] = 1;
+                if(board[i][j] == '.')
+                {
+                    for(char c='1'; c<='9'; c++)
+                    {
+                        if(isValid(board, i, j, c))
+                        {
+                            board[i][j] = c;
 
-                solve(col+1, ans, board, leftRow, leftDia, rightDia, ind);
+                            if(solve(board) == true)
+                               return true;
+                            else
+                               board[i][j] = '.';
+                        }
+                    }
 
-                board[row][col] = '.';
-                leftRow[row] = 0;
-                leftDia[row+col] = 0;
-                rightDia[ind-1+col-row] = 0;
+                    return false;
+                }
             }
         }
-    }
-
-public:
-    vector<vector<string>> solveNQueens(int n) {
-        // ----------- Optimized code (HASHING). ----------------
-        // ----------- TC = O(N! * N) and SC = O(N) -----------
-         vector<vector<string>> ans;
-        vector<string> board(n);
-        string s(n, '.');
-
-        for(int i=0; i<n; i++)
-        {
-            board[i] = s;
-        }
-        vector<int> leftRow(n, 0), leftDia(2*n-1, 0), rightDia(2*n-1, 0);
-
-        solve(0, ans, board, leftRow, leftDia, rightDia, n);
-        return ans;
+        return true;
     }
 
 
-/*bool isSafe(int row, int col, vector<string>& board, int ind)
-{
-    //checking upper diagonol
-    int duprow = row;
-    int dupcol = col;
-
-    while(row>=0 && col>=0) 
+    bool isValid(vector<vector<char>>& board, int row, int col, char c)
     {
-        if(board[row][col] == 'Q') return false;
-        row--;
-        col--;
-    } 
-
-    row = duprow;
-    col = dupcol;
-    while(col>=0){
-        if(board[row][col] == 'Q') return false;
-        col--;
-    }
-
-    row = duprow;
-    col = dupcol;
-    while(row<ind && col>=0)
-    {
-        if(board[row][col] == 'Q') return false;
-        row++;
-        col--;
-    }
-
-    return true;
-}
-
-public:
-    void solve(int col, vector<string> &board, vector<vector<string>>& ans, int ind)
-    {
-        if(col == ind)
+        for(int i=0; i<9; i++)
         {
-            ans.push_back(board);
-            return;
+            if(board[i][col] == c) return false;
+            if(board[row][i] == c) return false;
+            if(board[3*(row/3)+i/3][3*(col/3)+i%3] == c) return false;
         }
-
-        for(int row=0; row<ind; row++)
-        {
-            if(isSafe(row, col, board, ind))
-            {
-                board[row][col] = 'Q';
-                solve(col+1, board, ans, ind);
-                board[row][col] = '.';
-            }
-        }
+        return true;
     }
-
-public:
-    vector<vector<string>> solveNQueens(int n) {
-        //--------- 1st Method ------------ 
-
-        // ----------- TC = O(N! * N) and SC = O(N^2) -----------
-        
-        vector<vector<string>> ans;
-        vector<string> board(n);
-        string s(n, '.');
-
-        for(int i=0; i<n; i++)
-        {
-            board[i] = s; // This assigns a string of size 'n' to each index of the board. (that means each row of the board is assigned with a string of size 'n'.)
-        }
-
-        solve(0, board, ans, n);
-        return ans;
-    }*/
 };
