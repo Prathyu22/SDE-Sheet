@@ -1,55 +1,146 @@
-//https://www.codingninjas.com/codestudio/problems/1112626?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website
-/*
-Find K-th Permutation Sequence
-Problem Statement: Given N and K, where N is the sequence of numbers from 1 to N([1,2,3….. N]) find the Kth permutation sequence.
+//https://leetcode.com/problems/n-queens/description/
 
-For N = 3  the 3!  Permutation sequences in order would look like this:-
-
-
-
-Note: 1<=K<=N! Hence for a given input its Kth permutation always exists
+/*N Queen Problem | Return all Distinct Solutions to the N-Queens Puzzle
+Problem Statement: The n-queens is the problem of placing n queens on n × n chessboard such that no two queens can attack each other. Given an integer n, return all distinct solutions to the n -queens puzzle. Each solution contains a distinct boards configuration of the queen’s placement, where ‘Q’ and ‘.’ indicate queen and empty space respectively.
 
 Examples:
 
-Example 1:
+Input: n = 4
 
-Input: N = 3, K = 3
- 
-Output: “213”
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
 
-Explanation: The sequence has 3! permutations as illustrated in the figure above. K = 3 corresponds to the third sequence.
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown below
 
-Example 2:
+Arrangement 1
+..Q.
+Q…
+…Q
+.Q..
 
-Input: N = 3, K = 5 
-
-Result: “312”
-
-Explanation: The sequence has 3! permutations as illustrated in the figure above. K = 5 corresponds to the fifth sequence.
+Arrangement 2
+.Q..
+…Q
+Q…
+..Q.
 */
 
-#include <bits/stdc++.h>
-using namespace std;
+class Solution {
 
-string kthPermutation(int n, int k) {
-    // Write your code here. 
-    int fact = 1;
-    vector<int> num;
-    for(int i=1; i<n; i++)
+public:
+    void solve(int col, vector<vector<string>>& ans, vector<string>& board, vector<int>& leftRow, vector<int>& leftDia, vector<int>& rightDia, int ind)
     {
-        fact = fact * i;
-        num.push_back(i);
+        if(col == ind)
+        {
+            ans.push_back(board);
+            return;
+        }
+
+        for(int row=0; row<ind; row++)
+        {
+            if(leftRow[row] == 0 && leftDia[row+col] == 0 && rightDia[(ind-1)+col-row] == 0)
+            {
+                board[row][col] = 'Q';
+                leftRow[row] = 1;
+                leftDia[row+col] = 1;
+                rightDia[ind-1+col-row] = 1;
+
+                solve(col+1, ans, board, leftRow, leftDia, rightDia, ind);
+
+                board[row][col] = '.';
+                leftRow[row] = 0;
+                leftDia[row+col] = 0;
+                rightDia[ind-1+col-row] = 0;
+            }
+        }
     }
-    num.push_back(n);
-    string ans = "";
-    k = k - 1;
-    while(true)
+
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        // ----------- Optimized code (HASHING). ----------------
+        // ----------- TC = O(N! * N) and SC = O(N) -----------
+         vector<vector<string>> ans;
+        vector<string> board(n);
+        string s(n, '.');
+
+        for(int i=0; i<n; i++)
+        {
+            board[i] = s;
+        }
+        vector<int> leftRow(n, 0), leftDia(2*n-1, 0), rightDia(2*n-1, 0);
+
+        solve(0, ans, board, leftRow, leftDia, rightDia, n);
+        return ans;
+    }
+
+
+/*bool isSafe(int row, int col, vector<string>& board, int ind)
+{
+    //checking upper diagonol
+    int duprow = row;
+    int dupcol = col;
+
+    while(row>=0 && col>=0) 
     {
-        ans = ans + to_string(num[k/fact]);
-        num.erase(num.begin() + k/fact);
-        if(num.size() == 0) break;
-        k = k % fact;
-        fact = fact / num.size();
+        if(board[row][col] == 'Q') return false;
+        row--;
+        col--;
+    } 
+
+    row = duprow;
+    col = dupcol;
+    while(col>=0){
+        if(board[row][col] == 'Q') return false;
+        col--;
     }
-    return ans;
+
+    row = duprow;
+    col = dupcol;
+    while(row<ind && col>=0)
+    {
+        if(board[row][col] == 'Q') return false;
+        row++;
+        col--;
+    }
+
+    return true;
 }
+
+public:
+    void solve(int col, vector<string> &board, vector<vector<string>>& ans, int ind)
+    {
+        if(col == ind)
+        {
+            ans.push_back(board);
+            return;
+        }
+
+        for(int row=0; row<ind; row++)
+        {
+            if(isSafe(row, col, board, ind))
+            {
+                board[row][col] = 'Q';
+                solve(col+1, board, ans, ind);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        //--------- 1st Method ------------ 
+
+        // ----------- TC = O(N! * N) and SC = O(N^2) -----------
+        
+        vector<vector<string>> ans;
+        vector<string> board(n);
+        string s(n, '.');
+
+        for(int i=0; i<n; i++)
+        {
+            board[i] = s; // This assigns a string of size 'n' to each index of the board. (that means each row of the board is assigned with a string of size 'n'.)
+        }
+
+        solve(0, board, ans, n);
+        return ans;
+    }*/
+};
